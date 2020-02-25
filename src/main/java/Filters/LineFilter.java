@@ -1,47 +1,74 @@
 package Filters;
 
-import javax.xml.transform.stream.StreamSource;
+import Pipes.SimplePipeline;
+
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.*;
 
 public class LineFilter extends SimpleFilter{
-
+    ArrayList<ArrayList> listToResults;
     @Override
     public void run() throws IOException {
         System.out.println("This is from the lineFilter class!");
-        System.out.println("--------------------------------------------------------------");
-        // Use of read(byte[] buffer, int offset, int maxlen) :
-        byte[] buffer = new byte[6];
-        //Array of Strings
+        System.out.println("----------------------------------------------------");
+        //List of List containing array of chars
         ArrayList <ArrayList> lines = new ArrayList<>();
-        //Array of characters
+
 
         int index = 0;
-        while(this.connectIn.available() != index ){
+        //gives the amount of individual characters in the file
+        int charAmount = this.connectIn.available();
+        while( charAmount != index ){
             char current = (char)this.connectIn.read();
-            //todo: Character array list
+            //todo: create Character array list
             ArrayList <Character> charArrayList= new ArrayList<Character>();
            while(current != '\n'){
                 index++;
                charArrayList.add(current);
                current = (char)this.connectIn.read();
                if(current =='\n' ){
-                   System.out.println("broke from next line char");
-                   int checksize = this.connectIn.available();
-                   break;
-
-               } else if (0== this.connectIn.available()){
+                   //end list at singular index of lines
                    break;
                }
-
-              //String currentIndexString =  lines.get(index).concat(String.valueOf(index));
+               else if (0== this.connectIn.available()){
+                   //end list at singular index of lines
+                   break;
+               }
            }
            index++;
+           //add List of character into the list named lines at a singular index
            lines.add(charArrayList);
-           System.out.println("WE got out of the loop");
-          // index++;
-           //hex value for newline is 96  //ascii for space is 32
-     }
+           //add a new pipeline to pipeline list so functions can be separated.
+           pipelineList.add(new SimplePipeline());
+        }
+        //set global list = lines to access in the output in order to be able to write
+        setListToResults(lines);
+        //close connections
+       this.connectIn.close();
+       this.connectOut.close();
+       }
+
+       @Override
+       //todo: write to next connection
+       public void output() throws IOException {
+        int numberIndex = 0;
+
+           for(List<Character> line: listToResults ){
+               connectOut = new PipedOutputStream();
+               connectOut.connect(pipelineList.get(numberIndex).from);
+               for(char character: line){
+                   connectOut.write(character);
+               }
+               connectOut.close();
+               numberIndex++;
+           }
+       }
+
+    public ArrayList<ArrayList> getListToResults() {
+        return listToResults;
+    }
+
+    public void setListToResults(ArrayList<ArrayList> listToResults) {
+        this.listToResults = listToResults;
     }
 }
