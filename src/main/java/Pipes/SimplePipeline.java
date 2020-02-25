@@ -6,7 +6,7 @@ import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Queue;
+
 
 public class SimplePipeline {
     public PipedInputStream from = new PipedInputStream();
@@ -14,8 +14,11 @@ public class SimplePipeline {
    public Boolean execute(){
         try {
             for (SimpleFilter filter : linkedFilters) {
-                filter.setConnectIn(this.from);
+                filter.setConnectIn(from);
+                PipedOutputStream pipedOutputStream = new PipedOutputStream();
+                filter.setConnectOut(pipedOutputStream);
                 filter.run();
+                filter.output();
             }
             return true;
         }
@@ -23,5 +26,8 @@ public class SimplePipeline {
             exception.printStackTrace();
             return false;
         }
+    }
+
+    public SimplePipeline() {
     }
 }
