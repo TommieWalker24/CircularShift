@@ -1,9 +1,7 @@
 import Filters.LineFilter;
-import Filters.SimpleFilter;
 import Pipes.SimplePipeline;
 
 import java.io.*;
-import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -20,10 +18,18 @@ public class Main {
         //TODO: specify pipelines
         SimplePipeline pipeline1 = new SimplePipeline();
         SimplePipeline pipeline2 = new SimplePipeline();
+       // SimplePipeline pipeline3 = new SimplePipeline();
         //TODO: specify filters
         LineFilter lineFilter = new LineFilter();
+        LineFilter lineFilter1 = new LineFilter();
+        //TODO: specify the nextPipe for each created filter above
+        lineFilter.setNextPipe(pipeline2);
+        //new filter
         //TODO: for each filter associated to a specific pipeline. add the filter to pipeline's linkedFilters List
         pipeline1.linkedFilters.add(lineFilter);
+        pipeline2.linkedFilters.add(lineFilter1);
+        //TODO: specify the pipeline linked to the output of every filter
+        lineFilter.setNextPipe(pipeline2);
 
         try {
             FileInputStream fileInput = new FileInputStream(file);
@@ -32,33 +38,13 @@ public class Main {
             //link where to get data from to specific pipeline
             dataSource.connect(pipeline1.from);
             //sets connection between line filter and pipeline 2
-            lineFilter.getConnectOut().connect(pipeline2.from);
+           // lineFilter.getConnectOut().connect(pipeline2.from);
+            //---------------------------------------------------------------
 
-
-            //todo: -------------------------------------------------------------------
-
-//                PipedOutputStream pipedOutputStream = new PipedOutputStream();
-//                lineFilter.setConnectOut(pipedOutputStream);
-            //sets connection between line filter and pipeline 2
-          //  lineFilter.getConnectOut().connect(pipeline2.from);
-            //execute stream filter
-            //todo: should have to run this ~ lineFilter.run();
-            //output function writes each char so the next pipeline will be able to read the data
-            //todo: this is to write to output of filter ~ lineFilter.output();
-            /*
-                for(SimplePipeline pipeline: lineFilter.getPipelineList()){
-                    System.out.println("There is a pipe");
-                }
-             */
             //todo: transfer the file into datasource
             fileInput.transferTo(dataSource);
-            //todo: pipeline1 is linked to datasource above
+            //todo: pipeline1 is linked to datasource above the rest should be self running
             pipeline1.execute();
-
-            for (SimplePipeline pipeline : lineFilter.getPipelineList()) {
-                System.out.println("There is a pipe");
-
-            }
         }
         catch(Error error){
             System.out.println("IT BROKE");

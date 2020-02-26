@@ -7,14 +7,11 @@ import java.util.*;
 
 public class LineFilter extends SimpleFilter{
     ArrayList<ArrayList> listToResults;
+    String type = "Line";
     @Override
     public void run() throws IOException {
-        System.out.println("This is from the lineFilter class!");
-        System.out.println("----------------------------------------------------");
         //List of List containing array of chars
         ArrayList <ArrayList> lines = new ArrayList<>();
-
-
         int index = 0;
         //gives the amount of individual characters in the file
         int charAmount = this.connectIn.available();
@@ -51,16 +48,24 @@ public class LineFilter extends SimpleFilter{
        @Override
        //todo: write to next connection
        public void output() throws IOException {
-        int numberIndex = 0;
+        int pipelineListNumberIndex = 0;
 
            for(List<Character> line: listToResults ){
                connectOut = new PipedOutputStream();
-               connectOut.connect(pipelineList.get(numberIndex).from);
+               connectOut.connect(pipelineList.get(pipelineListNumberIndex).from);
                for(char character: line){
                    connectOut.write(character);
                }
+               //TODO:// this is where we need to find nextPipe receiving ends filter.type to create appropriate filter
+               if(!nextPipe.linkedFilters.isEmpty() ){
+                   pipelineList.get(pipelineListNumberIndex).linkedFilters.add(this.nextPipe.makeFilter());
+                   pipelineList.get(pipelineListNumberIndex).execute();
+               }
+               //Filter found type)
+               pipelineList.get(pipelineListNumberIndex).close();
+               //pipelineList.get(numberIndex).to.connect(nextConnect);
                connectOut.close();
-               numberIndex++;
+               pipelineListNumberIndex++;
            }
        }
 
@@ -70,5 +75,16 @@ public class LineFilter extends SimpleFilter{
 
     public void setListToResults(ArrayList<ArrayList> listToResults) {
         this.listToResults = listToResults;
+    }
+
+    public LineFilter() {
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
