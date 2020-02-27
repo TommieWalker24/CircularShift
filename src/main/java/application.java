@@ -12,14 +12,14 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
-public class display {
+public class application {
     private JButton execute;
     private JTextArea resultArea;
     private JTextField inputFile;
     private JPanel panel;
     private JLabel locationLabel;
 
-    public display() {
+    public application() {
         execute.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -60,7 +60,7 @@ public class display {
     }
     public static void main (String[] args){
         JFrame frame = new JFrame("Pipes and Filters");
-        frame.setContentPane(new display().panel);
+        frame.setContentPane(new application().panel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
