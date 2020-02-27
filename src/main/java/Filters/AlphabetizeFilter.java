@@ -27,13 +27,30 @@ public class AlphabetizeFilter extends SimpleFilter {
                     RuleBasedCollator myNorwegian = new RuleBasedCollator(lowerFirst);
                     Collections.sort(stringsToBeSorted,myNorwegian);
                     for(String string: stringsToBeSorted){
-                        System.out.println(string);
+                       // System.out.println(string);
                         sorted.add(string);
                     }
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-            } context.putParameter("key",sorted);
+            } 
+            String output = "";
+            int i = 0;
+            for(String line: sorted){
+                if(i == 0){
+                   output =  output.concat(line + "\n");
+                }
+                else if(i > 0 && i != sorted.size()-1){
+                    output = output.concat(line+ "\n");
+                }
+                else{
+                    output = output.concat(line);
+                }
+               i++; 
+                
+            }
+            System.out.println(output);
+            context.putParameter("key",output);
         }
         catch (Error e){
             System.out.println(e.getCause()+ "\n"+ e.getMessage());
