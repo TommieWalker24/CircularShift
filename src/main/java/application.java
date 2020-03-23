@@ -37,6 +37,7 @@ public class application {
                 AlphabetizeFilter alphabetizeFilter = new AlphabetizeFilter();
                 //TODO: for each filter associated to a specific pipeline. add the filter to pipeline's linkedFilters List
                 //todo: add filters in the order you want data to be manipulated
+
                 pipeline1.linkedFilters.add(lineFilter);
                 pipeline1.linkedFilters.add(circularFilter);
                 pipeline1.linkedFilters.add(alphabetizeFilter);

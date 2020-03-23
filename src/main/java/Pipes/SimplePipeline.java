@@ -21,7 +21,8 @@ public class SimplePipeline extends PipedInputStream {
             for (SimpleFilter filter : linkedFilters) {
                 filter.run(context);
             }
-            return context.getParameter("key");
+            System.out.print(listToString(context.getParameter("key")));
+            return listToString(context.getParameter("key"));
         }
         catch (Exception exception){
             exception.printStackTrace();
@@ -29,6 +30,13 @@ public class SimplePipeline extends PipedInputStream {
         }
     }
 
+    public String listToString(List<String> list){
+       String output = new String();
+       for(String string: list){
+           output = output.concat(string);
+       }
+       return output;
+    }
 
     public SimplePipeline() {
     }

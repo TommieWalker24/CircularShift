@@ -3,6 +3,7 @@ package Filters;
 import Context.Context;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,25 +16,24 @@ public class CircularFilter extends SimpleFilter {
         boolean found = context.findParameterByKey("key");
         if (found == true) {
             try {
-                ArrayList<ArrayList> listOfList = context.getParameter("key");
+                //todo: this expectation is breaking the code
+
+                ArrayList<String> input = context.getParameter("key");
                 String copy = new String();
-                for (ArrayList list : listOfList) {
-                    for (int i = 0; i != list.size(); i++) {
-                        char readCharacter = (char) list.get(i);
-                        originalLine = originalLine.concat(String.valueOf(readCharacter));
-                        copy = copy.concat(String.valueOf(readCharacter));
-                    }
-                    //trim the original string
-                    originalLine = originalLine.trim();
+                for (String string : input) {
+                    copy = string;
+                    originalLine = string;
                     copy = circularShift(copy);
-                    shiftedStrings.add(copy);
+                    shiftedStrings.add(originalLine);
                     while (!originalLine.equals(copy)) {
-                        copy = circularShift(copy);
                         shiftedStrings.add(copy);
+                        copy = circularShift(copy);
+
                     }
                     copy = "";
                     originalLine = "";
                 }
+
                 context.putParameter("key", shiftedStrings);
             } catch (Error e) {
                 System.out.println(e.getCause() + "\n" + e.getMessage());
@@ -48,7 +48,6 @@ public class CircularFilter extends SimpleFilter {
         String newLine = "";
         //placeholder to help move word to the end of the list
         String wordCopy = new String();
-        copy = copy.trim();
         for (String word : copy.split(" ")) {
             wordList.add(word);
         }

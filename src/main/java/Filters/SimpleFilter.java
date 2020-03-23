@@ -4,10 +4,7 @@ import Context.Context;
 import Interfaces.FilterInterface;
 import Pipes.SimplePipeline;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
