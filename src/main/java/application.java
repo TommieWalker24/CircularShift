@@ -7,10 +7,8 @@ import Pipes.SimplePipeline;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.io.*;
+import java.util.ArrayList;
 
 public class application {
     private JButton execute;
@@ -37,6 +35,7 @@ public class application {
                 AlphabetizeFilter alphabetizeFilter = new AlphabetizeFilter();
                 //TODO: for each filter associated to a specific pipeline. add the filter to pipeline's linkedFilters List
                 //todo: add filters in the order you want data to be manipulated
+
                 pipeline1.linkedFilters.add(lineFilter);
                 pipeline1.linkedFilters.add(circularFilter);
                 pipeline1.linkedFilters.add(alphabetizeFilter);
@@ -47,16 +46,18 @@ public class application {
                     //todo: instantiate context
                     Context context = new Context();
                     //todo: place value in context
-                    context.putParameter("key",fileInput);
+                    ArrayList<String> input = construct(fileInput);
+                    context.putParameter("key",input);
                     resultArea.setText((String) pipeline1.execute(context));
                 }
-                catch(Error | FileNotFoundException error){
+                catch(Error | IOException error){
                     System.out.println("IT BROKE");
                     System.out.println(error.getLocalizedMessage());
                     System.out.println(error.getCause());
                 }
             }
         });
+
     }
     public static void main (String[] args){
         JFrame frame = new JFrame("Pipes and Filters");
@@ -64,5 +65,42 @@ public class application {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+    }
+    static ArrayList<String> construct(InputStream inputStream) throws IOException {
+        ArrayList<String>output = new ArrayList<String>();
+        //List of List containing array of chars
+        ArrayList <ArrayList> lines = new ArrayList<>();
+        int index = 0;
+        //gives the amount of individual characters in the file
+        int charAmount = inputStream.available();
+        while( charAmount != index ){
+            char current = (char)inputStream.read();
+            //todo: create Character array list
+            ArrayList <Character> charArrayList= new ArrayList<Character>();
+            while(current != '\n'){
+                index++;
+                charArrayList.add(current);
+                current = (char)inputStream.read();
+                if(current =='\n' ){
+                    //end list at singular index of lines
+                    break;
+                }
+                else if (0 == inputStream.available()){
+                    //add last char
+                    charArrayList.add(current);
+                    //end list at singular index of lines
+                    break;
+                }
+            }
+            index++;
+            //add List of character into the list named lines at a singular index
+            String line = "";
+            for(Character character: charArrayList){
+                line =  line.concat(String.valueOf(character));
+            }
+            output.add(line);
+            lines.add(charArrayList);
+        }
+        return output;
     }
 }

@@ -2,7 +2,6 @@ package Filters;
 
 import Context.Context;
 
-import java.io.Console;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.RuleBasedCollator;
@@ -27,16 +26,17 @@ public class AlphabetizeFilter extends SimpleFilter {
                     RuleBasedCollator myNorwegian = new RuleBasedCollator(lowerFirst);
                     Collections.sort(stringsToBeSorted,myNorwegian);
                     for(String string: stringsToBeSorted){
-                       // System.out.println(string);
                         sorted.add(string);
                     }
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-            } 
+            }
+            ArrayList<String> outputList = new ArrayList<String>();
             String output = "";
             int i = 0;
             for(String line: sorted){
+                output = "";
                 if(i == 0){
                    output =  output.concat(line + "\n");
                 }
@@ -46,11 +46,11 @@ public class AlphabetizeFilter extends SimpleFilter {
                 else{
                     output = output.concat(line);
                 }
-               i++; 
+               i++;
+                outputList.add(output);
                 
             }
-            System.out.println(output);
-            context.putParameter("key",output);
+            context.putParameter("key",outputList);
         }
         catch (Error e){
             System.out.println(e.getCause()+ "\n"+ e.getMessage());
