@@ -28,6 +28,7 @@ public class Main {
         pipeline1.linkedFilters.add(circularFilter);
         pipeline1.linkedFilters.add(alphabetizeFilter);
 
+
         try {
 
             InputStream fileInput = new FileInputStream(file);

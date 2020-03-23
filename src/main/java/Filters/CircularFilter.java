@@ -21,6 +21,7 @@ public class CircularFilter extends SimpleFilter {
                 ArrayList<String> input = context.getParameter("key");
                 String copy = new String();
                 for (String string : input) {
+                    string = string.trim();
                     copy = string;
                     originalLine = string;
                     copy = circularShift(copy);
