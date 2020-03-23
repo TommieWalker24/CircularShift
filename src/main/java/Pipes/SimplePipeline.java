@@ -22,7 +22,8 @@ public class SimplePipeline extends PipedInputStream {
                 filter.run(context);
             }
             System.out.print(listToString(context.getParameter("key")));
-            return listToString(context.getParameter("key"));
+            String result = listToString(context.getParameter("key"));
+            return result;
         }
         catch (Exception exception){
             exception.printStackTrace();
