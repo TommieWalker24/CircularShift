@@ -3,7 +3,6 @@ package Filters;
 import Context.Context;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,8 +15,6 @@ public class CircularFilter extends SimpleFilter {
         boolean found = context.findParameterByKey("key");
         if (found == true) {
             try {
-                //todo: this expectation is breaking the code
-
                 ArrayList<String> input = context.getParameter("key");
                 String copy = new String();
                 for (String string : input) {

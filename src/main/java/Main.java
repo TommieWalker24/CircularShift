@@ -2,6 +2,7 @@ import Context.Context;
 import Filters.AlphabetizeFilter;
 import Filters.CircularFilter;
 import Filters.LineFilter;
+import Filters.NoiseWordFilter;
 import Pipes.SimplePipeline;
 
 import java.io.*;
@@ -22,11 +23,13 @@ public class Main {
         LineFilter lineFilter = new LineFilter();
         CircularFilter circularFilter = new CircularFilter();
         AlphabetizeFilter alphabetizeFilter = new AlphabetizeFilter();
+        NoiseWordFilter noiseWordFilter = new NoiseWordFilter();
         //TODO: for each filter associated to a specific pipeline. add the filter to pipeline's linkedFilters List
         //todo: add filters in the order you want data to be manipulated
         pipeline1.linkedFilters.add(lineFilter);
         pipeline1.linkedFilters.add(circularFilter);
         pipeline1.linkedFilters.add(alphabetizeFilter);
+        pipeline1.linkedFilters.add(noiseWordFilter);
 
 
         try {
