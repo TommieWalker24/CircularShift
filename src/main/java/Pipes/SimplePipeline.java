@@ -2,6 +2,7 @@ package Pipes;
 
 import Context.Context;
 import Filters.SimpleFilter;
+import org.apache.commons.lang3.time.StopWatch;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -18,11 +19,16 @@ public class SimplePipeline extends PipedInputStream {
 
    public Object execute(final Context context){
         try {
+            StopWatch stopWatch = new StopWatch();
+            stopWatch.start();
             for (SimpleFilter filter : linkedFilters) {
                 filter.run(context);
             }
-            System.out.print(listToString(context.getParameter("key")));
             String result = listToString(context.getParameter("key"));
+
+            stopWatch.stop();
+            long time = stopWatch.getTime();
+            System.out.println(time);
             return result;
         }
         catch (Exception exception){
