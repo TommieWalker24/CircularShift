@@ -27,7 +27,8 @@ public class NoiseWordFilter extends  SimpleFilter {
                         result.add(string);
                     }
                 }
-                context.putParameter("key",result);
+                setResult(result);
+    //            context.putParameter("key",result);
             } catch (Error e) {
                 System.out.println(e.getCause() + "\n" + e.getMessage());
             }

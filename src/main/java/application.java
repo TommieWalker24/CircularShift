@@ -51,6 +51,7 @@ public class application {
                     //todo: place value in context
                     ArrayList<String> input = construct(fileInput);
                     context.putParameter("key",input);
+                    context.putParameter("original", input);
                     resultArea.setText((String) pipeline1.execute(context));
                 }
                 catch(Error | IOException error){

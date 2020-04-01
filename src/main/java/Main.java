@@ -7,7 +7,6 @@ import Pipes.SimplePipeline;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -42,6 +41,7 @@ public class Main {
             //todo: place value in context
             ArrayList<String> input = construct(fileInput);
             context.putParameter("key",input);
+            context.putParameter("original", input);
             pipeline1.execute(context);
         }
         catch(Error error){

@@ -5,7 +5,6 @@ import java.io.*;
 import java.util.*;
 
 public class LineFilter extends SimpleFilter{
-    ArrayList<ArrayList> listToResults;
     @Override
     public void run(Context context) throws IOException {
         boolean found = context.findParameterByKey("key");
@@ -18,7 +17,8 @@ public class LineFilter extends SimpleFilter{
                     output.add(string);
                 }
                 //close connections
-                context.putParameter("key",output);
+                setResult(output);
+               // context.putParameter("key",output);
 
             }
             catch(Error e){
@@ -27,14 +27,6 @@ public class LineFilter extends SimpleFilter{
         }
 
        }
-
-    public ArrayList<ArrayList> getListToResults() {
-        return listToResults;
-    }
-
-    public void setListToResults(ArrayList<ArrayList> listToResults) {
-        this.listToResults = listToResults;
-    }
 
     public LineFilter() {
     }

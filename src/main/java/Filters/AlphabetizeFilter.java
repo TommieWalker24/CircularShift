@@ -50,7 +50,8 @@ public class AlphabetizeFilter extends SimpleFilter {
                 outputList.add(output);
                 
             }
-            context.putParameter("key",outputList);
+            setResult(outputList);
+           // context.putParameter("key",outputList);
         }
         catch (Error e){
             System.out.println(e.getCause()+ "\n"+ e.getMessage());

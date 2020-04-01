@@ -26,19 +26,20 @@ public class CircularFilter extends SimpleFilter {
                     while (!originalLine.equals(copy)) {
                         shiftedStrings.add(copy);
                         copy = circularShift(copy);
-
                     }
                     copy = "";
                     originalLine = "";
                 }
-
-                context.putParameter("key", shiftedStrings);
+                //todo: here
+                setResult(shiftedStrings);
+              //  context.putParameter("key", shiftedStrings);
             } catch (Error e) {
                 System.out.println(e.getCause() + "\n" + e.getMessage());
             }
         }
 
     }
+
 
     //move the first string of the copied string to the back of the String
     private String circularShift(String copy) {
